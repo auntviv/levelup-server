@@ -16,8 +16,15 @@ class GameTypeView(ViewSet):
         
 
     def list(self, request):
-        """Handle GET requests to get all game types
-
-        Returns:
-            Response -- JSON serialized list of game types
-        """
+       
+        game_types = GameType.objects.all()
+        serializer = GameTypeSerializer(game_types, many=True)
+        return Response(serializer.data)
+        
+        
+class GameTypeSerializer(serializers.ModelSerializer):
+    """JSON serializer for game types
+    """
+    class Meta:
+        model = GameType
+        fields = ('id', 'label')
